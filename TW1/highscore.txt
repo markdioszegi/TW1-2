@@ -1,0 +1,11 @@
+Tamás | Thu, 19 Sep 2019 21:47:00 Közép-európai nyári ido  | 3 | 1 | Zagreb
+János | Thu, 19 Sep 2019 21:48:33 Közép-európai nyári ido  | 6 | 1 | Yaren District
+Dénes | Thu, 19 Sep 2019 21:58:11 Közép-európai nyári ido  | 4 | 1 | Algiers
+Wii | Thu, 19 Sep 2019 21:59:18 Közép-európai nyári ido  | 7 | 1 | Baku
+Buu  | Thu, 19 Sep 2019 22:04:23 Közép-európai nyári ido  | 2 | 1 | Cairo
+Bee | Thu, 19 Sep 2019 22:20:53 Közép-európai nyári ido  | 3 | 1 | Kingston
+Csiribá | Thu, 19 Sep 2019 23:00:05 Közép-európai nyári ido  | 13 | 9 | Pristina
+Kemény Srác | Thu, 19 Sep 2019 23:04:00 Közép-európai nyári ido  | 12 | 6 | Beirut
+Jani | Thu, 19 Sep 2019 23:04:29 Közép-európai nyári ido  | 10 | 4 | Nairobi
+Dodó | Thu, 19 Sep 2019 23:15:23 Közép-európai nyári ido  | 21 | 8 | Bangkok
+Mester | Thu, 19 Sep 2019 23:17:02 Közép-európai nyári ido  | 3 | 1 | Port Vila
