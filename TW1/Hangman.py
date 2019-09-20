@@ -93,8 +93,8 @@ def evaluation(startTime, guesses, guessedWord):
     saveHighScore(guessingTime, guesses, guessedWord)
 
 def saveHighScore(guessingTime, guesses, guessedWord):
-    name = input("Name: ")
     t = time.strftime("%a, %d %b %Y %H:%M:%S %Z", time.localtime(time.time()))
+    name = input("Name: ")
     score = name
     with open(os.path.join(sys.path[0], "highscore.txt"), "a", encoding="UTF-8") as f:
         f.write("{} | {} | {} | {} | {}\n".format(name, t, guessingTime, guesses, guessedWord))
@@ -106,28 +106,43 @@ def printBestScores():
     tmpScores = []
     scores = []
     topTen = []
-    with open(os.path.join(sys.path[0], "highscore.txt"), "r", encoding="UTF-8") as f:
-        tmpScores = f.readlines()
-    for index, score in enumerate(tmpScores):
-        tmpScores[index] = score.rstrip("\n")
-        scores.append(score.split(" | "))
-    for index, score in enumerate(scores):
-        tmp = []
-        avg = int(score[2]) + int(score[3]) / 2
-        tmp.append(int(avg))
-        tmp.append(int(index))
-        topTen.append(tmp)
-        #print(score[3])
-    topTen.sort(key = lambda x: x[0])
-    #topTen.sort()
-    #print(topTen)
-    i = 0
-    while i < len(topTen) and i < 10:
-        print(i + 1, ":", " | ".join(scores[topTen[i][1]][:-1]))
-        i += 1
+    try:
+        with open(os.path.join(sys.path[0], "highscore.txt"), "r", encoding="UTF-8") as f:
+            tmpScores = f.readlines()
+        for index, score in enumerate(tmpScores):
+            tmpScores[index] = score.rstrip("\n")
+            scores.append(score.split(" | "))
+        for index, score in enumerate(scores):
+            tmp = []
+            avg = int(score[2]) + int(score[3]) / 2
+            tmp.append(int(avg))
+            tmp.append(int(index))
+            topTen.append(tmp)
+            #print(score[3])
+        topTen.sort(key = lambda x: x[0])
+        #topTen.sort()
+        #print(topTen)
+        i = 0
+        while i < len(topTen) and i < 10:
+            print(i + 1, ":", " | ".join(scores[topTen[i][1]]), end="")
+            i += 1
+    except:
+        with open(os.path.join(sys.path[0], "highscore.txt"), "w", encoding="UTF-8") as f:
+            f.write("")
+        
+def gameType():
+    gtype = input("Capitals (1) or custom words (2)?")
+    if gtype == "1":
+        pass
+    elif gtype == "2":
+        pass
+    else:
+        print("Try again!")
+    return gtype
 
 def main():
     LIVES = 7
+    #gameType()  #//TODO
     startTime = time.time()
     feladvanyok = []
     feladvanyok = readFromFile("capitals.txt")
