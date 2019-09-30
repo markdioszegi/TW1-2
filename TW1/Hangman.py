@@ -131,27 +131,31 @@ def printBestScores():
             f.write("")
         
 def gameType():
-    gtype = input("Capitals (1) or custom words (2)?")
-    if gtype == "1":
-        pass
-    elif gtype == "2":
-        pass
-    else:
-        print("Try again!")
-    return gtype
+    accepted = False
+    while not accepted:
+        gtype = input("Capitals (1) or custom words (2)? ")
+        if gtype == "1":
+            accepted = True
+        elif gtype == "2":
+            accepted = True
+        else:
+            print("Try again!")
+    return int(gtype)
 
 def main():
     LIVES = 7
-    #gameType()  #//TODO
+    gtype = gameType()
+    if gtype == 1:
+        feladvanyok = []
+        feladvanyok = readFromFile("capitals.txt")
+        randomNumber = random.randrange(0, len(feladvanyok))
+        feladvany = feladvanyok[randomNumber][1]
+        hint = "The capital of " + feladvanyok[randomNumber][0]
+    elif gtype == 2:
+        feladvany = input("Enter the word your opponent have to guess: ")
+        hint = input("Enter a hint of the word: ")
+        
     startTime = time.time()
-    feladvanyok = []
-    feladvanyok = readFromFile("capitals.txt")
-    print(feladvanyok)
-
-    randomNumber = random.randrange(0, len(feladvanyok))
-    feladvany = feladvanyok[randomNumber][1]
-    hint = feladvanyok[randomNumber][0]
-
     fade = []
     alreadyGuessedLetters = []
 
@@ -168,34 +172,36 @@ def main():
     while LIVES != 0 and fade != feladvany:
         printStatus(LIVES)
         print(*fade, sep="  ")
+        #print(alreadyGuessedLetters)
         solution = feladvany.lower()
         if LIVES == 1:
-            print("Hint: The capital of {}".format(hint))
+            print("Hint: {}".format(hint))
         letterGuess = input("Guess a letter or the whole word: ")
         letterGuess = letterGuess.lower()
-        if letterGuess == solution:
-            print("You win!")
-            evaluation(startTime, len(alreadyGuessedLetters) + 1 + (7 - LIVES), feladvany)
-            break
-        elif letterGuess in solution:
-            if not letterGuess in alreadyGuessedLetters:
+        if not letterGuess in alreadyGuessedLetters:
+            if letterGuess == solution:
+                print("You win!")
+                evaluation(startTime, len(alreadyGuessedLetters) + 1, feladvany)
+                break
+            elif letterGuess in solution:
                 for i in range(len(solution)):
                     if solution[i] == letterGuess:
                         fade[i] = feladvany[i]
-                        alreadyGuessedLetters.append(letterGuess)
-            else:
-                print("Already guessed that letter!")
-                print("Letters guessed: {}".format(alreadyGuessedLetters))
+                alreadyGuessedLetters.append(letterGuess)
+            elif len(letterGuess) > 1:
+                print("That is not the correct word! (-2 health points)")
                 input("Press enter to continue...")
-        elif len(letterGuess) > 1:
-            print("That is not the whole word! (-2 health points)")
-            input("Press enter to continue...")
-            if LIVES == 1:
-                LIVES -= 1
+                if LIVES == 1:
+                    LIVES -= 1
+                else:
+                    LIVES -= 2
             else:
-                LIVES -= 2
+                LIVES -= 1
+                alreadyGuessedLetters.append(letterGuess)
         else:
-            LIVES -= 1
+            print("Already guessed that letter!")
+            print("Letters guessed: {}".format(", ".join(alreadyGuessedLetters)))
+            input("Press enter to continue...")
         if LIVES > 1:
             clearScreen()
             printStatus(LIVES)
@@ -206,7 +212,7 @@ def main():
             break
         if "".join(fade).lower() == solution:
                 print("You win!")
-                evaluation(startTime, len(alreadyGuessedLetters) + 1 + (7 - LIVES), feladvany)
+                evaluation(startTime, len(alreadyGuessedLetters), feladvany)
                 break
         clearScreen()
         #time.sleep(2)
@@ -219,4 +225,5 @@ def main():
     else:
         exit()
 
-main()
+if __name__ == "__main__":
+    main()
