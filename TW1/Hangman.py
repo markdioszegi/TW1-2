@@ -1,9 +1,9 @@
-from __future__ import print_function
 import os
 import time
 import random
 import datetime
 import sys
+import TicTacToe
 
 hangmen = ['''
       +---+
@@ -97,7 +97,7 @@ def saveHighScore(guessingTime, guesses, guessedWord):
     name = input("Name: ")
     score = name
     with open(os.path.join(sys.path[0], "highscore.txt"), "a", encoding="UTF-8") as f:
-        f.write("{} | {} | {} | {} | {}\n".format(name, t, guessingTime, guesses, guessedWord))
+        f.write("{:<12} | {} | {:^3} | {:^3} | {}\n".format(name, t, guessingTime, guesses, guessedWord))
         f.close()
     #date = datetime.
 
@@ -124,7 +124,11 @@ def printBestScores():
         #print(topTen)
         i = 0
         while i < len(topTen) and i < 10:
-            print(i + 1, ":", " | ".join(scores[topTen[i][1]]), end="")
+            if i == 9:
+                print(i + 1, end = "")
+                print(":", " | ".join(scores[topTen[i][1]]), end="")
+            else:
+                print(i + 1, ":", " | ".join(scores[topTen[i][1]]), end="")
             i += 1
     except:
         with open(os.path.join(sys.path[0], "highscore.txt"), "w", encoding="UTF-8") as f:
@@ -133,11 +137,13 @@ def printBestScores():
 def gameType():
     accepted = False
     while not accepted:
-        gtype = input("Capitals (1) or custom words (2)? ")
+        gtype = input("Capitals (1) or custom words (2) or Tic Tac Toe (3)? ")
         if gtype == "1":
             accepted = True
         elif gtype == "2":
             accepted = True
+        elif gtype == "3":
+            TicTacToe2.main()
         else:
             print("Try again!")
     return int(gtype)
@@ -152,7 +158,17 @@ def main():
         feladvany = feladvanyok[randomNumber][1]
         hint = "The capital of " + feladvanyok[randomNumber][0]
     elif gtype == 2:
-        feladvany = input("Enter the word your opponent have to guess: ")
+        accepted = False
+        while not accepted:
+            feladvany = input("Enter the word your opponent have to guess: ")
+            if feladvany and not feladvany.isspace():
+                #print(feladvany[feladvany.find(" ") - 1].isspace())
+                feladvany = feladvany.split(" ")
+                feladvany = [ele for ele in feladvany if ele]
+                tmp = " ".join(feladvany)
+                feladvany = tmp
+                print(feladvany)
+                accepted = True
         hint = input("Enter a hint of the word: ")
         
     startTime = time.time()
@@ -165,9 +181,8 @@ def main():
         else:
             fade.append("_")
 
-    print("het eleted van")
-    print(feladvany)
-    clearScreen()      #DEBUG
+    clearScreen()
+    #print(feladvany)    #DEBUG
 
     while LIVES != 0 and fade != feladvany:
         printStatus(LIVES)
@@ -183,11 +198,15 @@ def main():
                 print("You win!")
                 evaluation(startTime, len(alreadyGuessedLetters) + 1, feladvany)
                 break
-            elif letterGuess in solution:
-                for i in range(len(solution)):
-                    if solution[i] == letterGuess:
-                        fade[i] = feladvany[i]
-                alreadyGuessedLetters.append(letterGuess)
+            elif len(letterGuess) == 1:
+                if letterGuess in solution:
+                    for i in range(len(solution)):
+                        if solution[i] == letterGuess:
+                            fade[i] = feladvany[i]
+                    alreadyGuessedLetters.append(letterGuess)
+                else:
+                    LIVES -= 1
+                    alreadyGuessedLetters.append(letterGuess)
             elif len(letterGuess) > 1:
                 print("That is not the correct word! (-2 health points)")
                 input("Press enter to continue...")
@@ -221,6 +240,7 @@ def main():
 
     restart = (input("Do you want to play another game? (Yes/No) (y/n): ")).lower()
     if restart == "yes" or restart == "y":
+        clearScreen()
         main()
     else:
         exit()
