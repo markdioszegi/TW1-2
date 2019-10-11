@@ -143,7 +143,7 @@ def gameType():
         elif gtype == "2":
             accepted = True
         elif gtype == "3":
-            TicTacToe2.main()
+            TicTacToe.main()
         else:
             print("Try again!")
     return int(gtype)
